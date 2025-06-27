@@ -1,3 +1,5 @@
+local M = {}
+
 local map = vim.keymap.set
 
 map("i", "<C-b>", "<ESC>^i", { desc = "move beginning of line" })
@@ -169,3 +171,20 @@ map("n", "<leader>go", ":Git checkout", { desc = "Git checkout" })
 -- File operations
 --  git add
 map("n", "<leader>ga", ":Gwrite<CR>", { desc = "Git add" })
+
+M.gitsigns = function(bufnr)
+	local gs = package.loaded.gitsigns
+
+	local function localMap(mode, l, r, opts)
+		opts = opts or {}
+		opts.buffer = bufnr
+		vim.keymap.set(mode, l, r, opts)
+	end
+
+	localMap("n", "<leader>ph", gs.preview_hunk, { desc = "Preview git hunk" })
+	localMap("n", "<leader>rh", gs.reset_hunk, { desc = "Reset git hunk" })
+	localMap("n", "]h", gs.next_hunk, { desc = "Next git hunk" })
+	localMap("n", "[h", gs.prev_hunk, { desc = "Previous git hunk" })
+end
+
+return M
