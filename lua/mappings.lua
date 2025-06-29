@@ -187,4 +187,9 @@ M.gitsigns = function(bufnr)
 	localMap("n", "[h", gs.prev_hunk, { desc = "Previous git hunk" })
 end
 
+-- copy file path relative to project root (cwd)
+map("n", "<leader>pr", "<cmd>let @+ = fnamemodify(expand('%:p'), ':.')<CR>", { desc = "netrw: copy path from project root" })
+-- copy absolute file path (from PC root)
+map("n", "<leader>pa", "<cmd>let @+ = expand('%:p')<CR>", { desc = "netrw: copy absolute path" })
+
 return M
