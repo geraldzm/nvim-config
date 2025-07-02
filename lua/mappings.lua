@@ -192,4 +192,11 @@ map("n", "<leader>pr", "<cmd>let @+ = fnamemodify(expand('%:p'), ':.')<CR>", { d
 -- copy absolute file path (from PC root)
 map("n", "<leader>pa", "<cmd>let @+ = expand('%:p')<CR>", { desc = "netrw: copy absolute path" })
 
+-- Tmux navigation
+map("n", "<c-h>", "<cmd>TmuxNavigateLeft<CR>")
+map("n", "<c-j>", "<cmd>TmuxNavigateDown<CR>")
+map("n", "<c-k>", "<cmd>TmuxNavigateUp<CR>")
+map("n", "<c-l>", "<cmd>TmuxNavigateRight<CR>")
+map("n", "<c-\\>", "<cmd>TmuxNavigatePrevious<CR>")
+
 return M
