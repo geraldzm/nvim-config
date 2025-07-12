@@ -85,7 +85,7 @@ map("n", "<C-u>", "<C-u>zz")
 map("n", "n", "nzzzv")
 map("n", "N", "Nzzzv")
 
-map("n", "<leader>pv", vim.cmd.Ex, { desc = "Open Netrw" })
+map("n", "<leader>pv", vim.cmd.Oil, { desc = "Open Oil" })
 
 map("n", "#", function()
 	vim.fn.setreg("/", "\\<" .. vim.fn.expand("<cword>") .. "\\>")
