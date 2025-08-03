@@ -36,6 +36,9 @@ o.splitright = true
 o.timeoutlen = 400
 o.undofile = true
 
+-- vertical line at n columns 
+opt.colorcolumn = "100"
+
 -- interval for writing swap file to disk, also used by gitsigns
 o.updatetime = 50
 
