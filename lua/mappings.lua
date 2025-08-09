@@ -27,6 +27,13 @@ end, { desc = "general format file" })
 
 -- global lsp mappings
 map("n", "<leader>ds", vim.diagnostic.setloclist, { desc = "LSP diagnostic loclist" })
+map("n", "<PageDown>d", function()
+  vim.diagnostic.jump({ count = 1 })
+end, { desc = "Go to next diagnostic" })
+
+map("n", "<PageUp>d", function()
+  vim.diagnostic.jump({ count = -1 })
+end, { desc = "Go to previous diagnostic" })
 
 -- Comment
 map("n", "<leader>/", "gcc", { desc = "toggle comment", remap = true })
