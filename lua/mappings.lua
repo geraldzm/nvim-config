@@ -183,8 +183,8 @@ M.gitsigns = function(bufnr)
 
 	localMap("n", "<leader>ph", gs.preview_hunk, { desc = "Preview git hunk" })
 	localMap("n", "<leader>rh", gs.reset_hunk, { desc = "Reset git hunk" })
-	localMap("n", "]h", gs.next_hunk, { desc = "Next git hunk" })
-	localMap("n", "[h", gs.prev_hunk, { desc = "Previous git hunk" })
+	localMap("n", "<End>h", gs.next_hunk, { desc = "Next git hunk" })
+	localMap("n", "<Home>h", gs.prev_hunk, { desc = "Previous git hunk" })
 end
 
 -- copy file path relative to project root (cwd)
