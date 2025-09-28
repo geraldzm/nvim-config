@@ -4,8 +4,8 @@ local M = {}
 local utils = require("nvchad.stl.utils")
 
 M.base46 = {
-	theme = "ashes",
-	theme_toggle = { "ashes", "ashes" },
+	theme = "pastelbeans",
+	theme_toggle = { "pastelbeans", "pastelbeans" },
 	hl_override = {
 		Comment = { italic = true },
 		["@comment"] = { italic = true },
