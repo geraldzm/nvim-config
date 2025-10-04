@@ -30,7 +30,7 @@ return {
 	---@type table
 	buffers = {
 		scratchPad = {
-			enabled = true,
+			enabled = false,
 		},
 		right = {
 			enabled = false,
