@@ -206,4 +206,7 @@ map("n", "<c-k>", "<cmd>TmuxNavigateUp<CR>")
 map("n", "<c-l>", "<cmd>TmuxNavigateRight<CR>")
 map("n", "<c-\\>", "<cmd>TmuxNavigatePrevious<CR>")
 
+-- undo tree
+map("n", "<leader>tu", "<cmd>UndotreeToggle<CR>", { desc = "Toggle undo tree" })
+
 return M

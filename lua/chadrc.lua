@@ -21,7 +21,7 @@ M.ui = {
 		},
 	},
 
-	telescope = { style = "borderless" }, -- borderless / bordered
+	telescope = { style = "bordered" }, -- borderless / bordered
 
 	-- lazyload it when there are 1+ buffers
 	tabufline = {
