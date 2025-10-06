@@ -6,7 +6,10 @@ local g = vim.g
 o.laststatus = 3
 o.showmode = false
 
+-- clipboard
 o.clipboard = "unnamedplus"
+g.clipboard = "tmux"
+
 o.cursorline = true
 o.cursorlineopt = "number"
 
