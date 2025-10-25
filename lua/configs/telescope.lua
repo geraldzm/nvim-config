@@ -1,5 +1,13 @@
 dofile(vim.g.base46_cache .. "telescope")
 
+-- Override border colors after base46 loads
+vim.schedule(function()
+	vim.api.nvim_set_hl(0, "TelescopeBorder", { fg = "#595959" })
+	vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = "#595959" })
+	vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = "#595959" })
+	vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = "#595959" })
+end)
+
 return {
 	defaults = {
 		prompt_prefix = "",
