@@ -13,6 +13,10 @@ g.clipboard = "tmux"
 o.cursorline = true
 o.cursorlineopt = "number"
 
+-- execute .exrc file on the projects if any
+o.exrc = true
+o.secure = true
+
 -- Indenting
 o.expandtab = true
 o.shiftwidth = 2
