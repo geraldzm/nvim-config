@@ -1,4 +1,3 @@
-vim.g.base46_cache = vim.fn.stdpath("data") .. "/base46/"
 vim.g.mapleader = " "
 -- vim.g.maplocalleader = "\\"
 
@@ -26,15 +25,8 @@ require("lazy").setup({
 	{ import = "plugins" },
 }, lazy_config)
 
--- load theme
-dofile(vim.g.base46_cache .. "defaults")
-dofile(vim.g.base46_cache .. "statusline")
 
--- Options
-require("options")
-require("autocmds")
+--- Options
+vim.opt.number = true -- Show line numbers
+vim.opt.relativenumber = true -- Show relative line numbers
 
--- Require mappings
-vim.schedule(function()
-	require("mappings")
-end)

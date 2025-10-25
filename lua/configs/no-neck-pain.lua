@@ -39,4 +39,5 @@ return {
 			filetype = "md",
 		},
 	},
+	debug = true,
 }

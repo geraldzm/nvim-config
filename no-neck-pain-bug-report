@@ -1,0 +1,120 @@
+Title: [bug]: Window-local options reset when reopening buffers
+
+## Description
+When reopening a previously closed buffer, window-local options like `number`,
+`relativenumber`, `wrap`, etc. are not preserved. The options set in `init.lua`
+are applied correctly on first buffer open, but lost when closing and reopening
+the same buffer.
+
+## Steps to reproduce
+
+**Minimal configuration:**
+
+# Project structure
+├── init.lua
+├── lua
+│   ├── configs
+│   │   ├── lazy.lua
+│   │   └── no-neck-pain.lua
+│   └── plugins
+│       └── init.lua
+
+`init.lua`:
+```lua
+vim.g.mapleader = " "
+
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  vim.fn.system({ "git", "clone", "--filter=blob:none", lazyrepo, "--branch=stable", lazypath })
+end
+vim.opt.rtp:prepend(lazypath)
+
+local lazy_config = require("configs.lazy")
+
+-- Load plugins
+require("lazy").setup({
+  { import = "plugins" },
+}, lazy_config)
+
+-- Window-local options that get reset
+vim.opt.number = true
+vim.opt.relativenumber = true
+```
+
+`lua/plugins/init.lua`:
+```lua
+return {
+  {
+    "shortcuts/no-neck-pain.nvim",
+    version = "*",
+    opts = {},
+    lazy = false,
+    config = function()
+      require("no-neck-pain").setup(require("configs.no-neck-pain"))
+    end,
+  },
+}
+```
+
+`lua/configs/lazy.lua`:
+```lua
+return {
+  defaults = { lazy = true },
+}
+```
+
+`lua/configs/no-neck-pain.lua`:
+```lua
+return {
+  width = 110,
+  autocmds = {
+    enableOnVimEnter = true,
+    enableOnTabEnter = false,
+    reloadOnColorSchemeChange = false,
+    skipEnteringNoNeckPainBuffer = false,
+  },
+  buffers = {
+    scratchPad = {
+      enabled = false,
+    },
+    right = {
+      enabled = false,
+    },
+    bo = {
+      filetype = "md",
+    },
+  },
+}
+```
+
+**Reproduction steps:**
+1. create a test.txt file
+2. Start nvim with: `nvim .`
+3. Enter the test.txt file
+4. Verify that line numbers are visible (`number` and `relativenumber` are set)
+5. Close the buffer: `:bd!`
+6. Reopen the same file
+
+**Expected behavior:** File should have all window options from config (`number` and `relativenumber` enabled)
+
+**Actual behavior:** Window options like `number` and `relativenumber` are disabled/reset
+
+## Workaround
+Re-apply options on WinEnter for normal buffers:
+```lua
+vim.api.nvim_create_autocmd("WinEnter", {
+  callback = function()
+    if vim.bo.buftype == "" then
+      vim.opt.number = true
+      vim.opt.relativenumber = true
+    end
+  end,
+})
+```
+
+## Environment
+- Neovim version: v0.11.4
+- no-neck-pain.nvim commit: `c3d96b648501554c9a87530b2ff86c721cddd5c1`
+- OS: Linux 6.12.53-1-lts
