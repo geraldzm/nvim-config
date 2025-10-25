@@ -1,5 +1,14 @@
 local autocmd = vim.api.nvim_create_autocmd
 
+-- Re-apply options when entering windows (fixes no-neck-pain resetting them)
+autocmd("WinEnter", {
+  callback = function()
+    if vim.bo.buftype == "" then
+      dofile(vim.fn.stdpath("config") .. "/lua/options.lua")
+    end
+  end,
+})
+
 -- user event that loads after UIEnter + only if file buf is there
 autocmd({ "UIEnter", "BufReadPost", "BufNewFile" }, {
   group = vim.api.nvim_create_augroup("NvFilePost", { clear = true }),
