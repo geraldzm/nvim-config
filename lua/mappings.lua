@@ -164,7 +164,7 @@ map("n", "<leader>gf", ":Git fetch<CR>", { desc = "Git fetch" })
 --  git stash
 map("n", "<leader>gh", ":Git stash<CR>", { desc = "Git log" })
 --  git log
-map("n", "<leader>gl", ":tab Git log<CR>", { desc = "Git log" })
+map("n", "<leader>gl", ":tab Git log --decorate<CR>", { desc = "Git log" })
 
 -- map("n", "<leader>gd", ":Gdiffsplit<CR>", { desc = "Git diff split" })
 -- map("n", "<leader>gvd", ":Gvdiffsplit<CR>", { desc = "Git vertical diff split" })
