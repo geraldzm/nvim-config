@@ -70,7 +70,7 @@ M.defaults = function()
 end
 
 -- EXAMPLE
-local servers = { "html", "cssls", "pylsp", "gopls", "ts_ls", "clangd" }
+local servers = { "html", "cssls", "pylsp", "gopls", "ts_ls", "clangd", "rust_analyzer", "terraformls" }
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
@@ -210,6 +210,6 @@ vim.lsp.config("rust_analyzer", {
 		},
 	},
 })
-vim.lsp.enable({ "html", "cssls", "pylsp", "gopls", "ts_ls", "clangd"  })
+vim.lsp.enable({ "html", "cssls", "pylsp", "gopls", "ts_ls", "clangd", "rust_analyzer", "terraformls" })
 
 return M
