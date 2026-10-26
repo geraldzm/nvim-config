@@ -101,9 +101,6 @@ vim.lsp.config("ts_ls", {
 				importModuleSpecifier = "non-relative",
 			},
 		},
-		diagnostics = {
-			enable = true,
-		},
 	},
 	init_options = {
 		preferences = {
