@@ -40,23 +40,29 @@ map("n", "<leader>/", "gcc", { desc = "toggle comment", remap = true })
 map("v", "<leader>/", "gc", { desc = "toggle comment", remap = true })
 
 -- telescope
-map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "telescope live grep" })
+map("n", "<leader>fw", function()
+	require("telescope.builtin").live_grep(require("search_scope").opts({}))
+end, { desc = "telescope live grep" })
 map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "telescope find buffers" })
 map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "telescope help page" })
 map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "telescope find in current buffer" })
-map("n", "<leader>ft", "<cmd>Telescope terms<CR>", { desc = "telescope pick hidden term" })
+map("n", "<leader>fp", function()
+	require("search_scope").pick()
+end, { desc = "telescope pick search scope" })
+map("n", "<leader>ft", function()
+	require("search_scope").toggle()
+end, { desc = "telescope toggle search scope" })
 
 map("n", "<leader>th", function()
 	require("nvchad.themes").open()
 end, { desc = "telescope nvchad themes" })
 
-map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "telescope find files" })
-map(
-	"n",
-	"<leader>fa",
-	"<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
-	{ desc = "telescope find all files" }
-)
+map("n", "<leader>ff", function()
+	require("telescope.builtin").find_files(require("search_scope").opts({}))
+end, { desc = "telescope find files" })
+map("n", "<leader>fa", function()
+	require("telescope.builtin").find_files(require("search_scope").opts({ follow = true, no_ignore = true, hidden = true }))
+end, { desc = "telescope find all files" })
 
 -- terminal
 map("t", "<C-x>", "<C-\\><C-N>", { desc = "terminal escape terminal mode" })
