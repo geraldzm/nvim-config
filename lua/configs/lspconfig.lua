@@ -14,6 +14,19 @@ M.on_attach = function(_, bufnr)
 	map("n", "<leader>ra", require("nvchad.lsp.renamer"), opts("NvRenamer"))
 end
 
+-- format on save, cleared per buffer so re-attaching doesn't stack autocmds
+local format_group = vim.api.nvim_create_augroup("LspFormatOnSave", { clear = true })
+M.format_on_save = function(bufnr)
+	vim.api.nvim_clear_autocmds({ group = format_group, buffer = bufnr })
+	vim.api.nvim_create_autocmd("BufWritePre", {
+		group = format_group,
+		buffer = bufnr,
+		callback = function()
+			vim.lsp.buf.format({ timeout_ms = 2000 })
+		end,
+	})
+end
+
 -- disable semanticTokens
 M.on_init = function(client, _)
 	if client:supports_method("textDocument/semanticTokens") then
@@ -85,13 +98,7 @@ end
 vim.lsp.config("ts_ls", {
 	on_attach = function(client, bufnr)
 		M.on_attach(client, bufnr)
-		-- Set up format on save if you want ts_ls to handle formatting
-		vim.api.nvim_create_autocmd("BufWritePre", {
-			buffer = bufnr,
-			callback = function()
-				vim.lsp.buf.format({ timeout_ms = 2000 })
-			end,
-		})
+		M.format_on_save(bufnr)
 	end,
 	on_init = M.on_init,
 	capabilities = M.capabilities,
@@ -113,13 +120,7 @@ vim.lsp.config("ts_ls", {
 vim.lsp.config("gopls", {
 	on_attach = function(client, bufnr)
 		M.on_attach(client, bufnr)
-		-- Set up format on save
-		vim.api.nvim_create_autocmd("BufWritePre", {
-			buffer = bufnr,
-			callback = function()
-				vim.lsp.buf.format({ timeout_ms = 2000 })
-			end,
-		})
+		M.format_on_save(bufnr)
 	end,
 	on_init = M.on_init,
 	capabilities = M.capabilities,
@@ -176,13 +177,7 @@ vim.lsp.config("pylsp", {
 vim.lsp.config("rust_analyzer", {
 	on_attach = function(client, bufnr)
 		M.on_attach(client, bufnr)
-		-- Set up format on save
-		vim.api.nvim_create_autocmd("BufWritePre", {
-			buffer = bufnr,
-			callback = function()
-				vim.lsp.buf.format({ timeout_ms = 2000 })
-			end,
-		})
+		M.format_on_save(bufnr)
 	end,
 	on_init = M.on_init,
 	capabilities = M.capabilities,
