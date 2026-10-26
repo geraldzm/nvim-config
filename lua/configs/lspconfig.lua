@@ -94,26 +94,59 @@ for _, lsp in ipairs(servers) do
 	})
 end
 
--- Typescript personalized config
-vim.lsp.config("ts_ls", {
-	on_attach = function(client, bufnr)
-		M.on_attach(client, bufnr)
-		M.format_on_save(bufnr)
-	end,
-	on_init = M.on_init,
-	capabilities = M.capabilities,
-	settings = {
-		typescript = {
-			preferences = {
-				importModuleSpecifier = "non-relative",
-			},
+-- Typescript: ts_ls needs the project's tsserver.js (TypeScript < 7), tsc serves everything else
+local function has_tsserver(root)
+	return vim.uv.fs_stat(vim.fs.joinpath(root, "node_modules/typescript/lib/tsserver.js")) ~= nil
+end
+
+local ts_ls_default = assert(vim.lsp.config.ts_ls)
+local tsc_default = assert(vim.lsp.config.tsc)
+
+local ts_settings = {
+	typescript = {
+		preferences = {
+			importModuleSpecifier = "non-relative",
 		},
 	},
+}
+
+local function ts_on_attach(client, bufnr)
+	M.on_attach(client, bufnr)
+	M.format_on_save(bufnr)
+end
+
+vim.lsp.config("ts_ls", {
+	on_attach = ts_on_attach,
+	on_init = M.on_init,
+	capabilities = M.capabilities,
+	root_dir = function(bufnr, on_dir)
+		ts_ls_default.root_dir(bufnr, function(root)
+			if has_tsserver(root) then
+				on_dir(root)
+			end
+		end)
+	end,
+	settings = ts_settings,
 	init_options = {
 		preferences = {
 			importModuleSpecifier = "non-relative",
 		},
 	},
+})
+
+vim.lsp.config("tsc", {
+	on_attach = ts_on_attach,
+	on_init = M.on_init,
+	capabilities = M.capabilities,
+	cmd = tsc_default.cmd, -- shares a binary cache with tsc_default.root_dir
+	root_dir = function(bufnr, on_dir)
+		tsc_default.root_dir(bufnr, function(root)
+			if not has_tsserver(root) then
+				on_dir(root)
+			end
+		end)
+	end,
+	settings = ts_settings,
 })
 
 -- golang personalized config
@@ -202,6 +235,6 @@ vim.lsp.config("rust_analyzer", {
 		},
 	},
 })
-vim.lsp.enable({ "html", "cssls", "pylsp", "gopls", "ts_ls", "clangd", "rust_analyzer", "terraformls" })
+vim.lsp.enable({ "html", "cssls", "pylsp", "gopls", "ts_ls", "tsc", "clangd", "rust_analyzer", "terraformls" })
 
 return M
