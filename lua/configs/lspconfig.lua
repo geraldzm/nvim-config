@@ -216,21 +216,14 @@ vim.lsp.config("rust_analyzer", {
 	capabilities = M.capabilities,
 	settings = {
 		["rust-analyzer"] = {
-			assist = {
-				importGranularity = "module",
-				importPrefix = "self",
+			imports = {
+				granularity = {
+					group = "module",
+				},
+				prefix = "self",
 			},
-			cargo = {
-				loadOutDirsFromCheck = true,
-			},
-			procMacro = {
-				enable = true,
-			},
-			checkOnSave = {
+			check = {
 				command = "clippy",
-			},
-			diagnostics = {
-				enable = true,
 			},
 		},
 	},
