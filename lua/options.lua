@@ -8,7 +8,19 @@ o.showmode = false
 
 -- clipboard
 o.clipboard = "unnamedplus"
-g.clipboard = "tmux"
+-- copy like the "tmux" provider.
+-- Paste from wayland directly so the terminal isn't asked to read the clipboard
+g.clipboard = {
+	name = "tmux-wayland",
+	copy = {
+		["+"] = { "tmux", "load-buffer", "-w", "-" },
+		["*"] = { "tmux", "load-buffer", "-w", "-" },
+	},
+	paste = {
+		["+"] = { "wl-paste", "--no-newline" },
+		["*"] = { "wl-paste", "--no-newline" },
+	},
+}
 
 o.cursorline = true
 o.cursorlineopt = "number"
